@@ -1,6 +1,14 @@
 .box{
     text-align:left;
 }
+
+.button {
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px;
+    cursor: pointer;
+  }
+
 #form{
     padding: 50px;
 }

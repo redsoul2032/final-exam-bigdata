@@ -102,6 +102,7 @@ export default class Showdata extends Component{
                                 <th>ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Timestamp</th>
                                 <th colSpan="2">Action</th>
                             </tr>
                         </thead>
@@ -112,11 +113,10 @@ export default class Showdata extends Component{
                                             <td>{user.id}</td>
                                             <td>{user.firstname}</td>
                                             <td>{user.lastname}</td>
+                                            <td>{user.regisTime}</td>
                                             <td>
-                                                <button type="button" class="btn btn-warning" onClick={()=>this.call(user)}>Edit</button>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger"  onClick={()=>this.onDelete(user)}>Delet</button>
+                                                <button type="button" class="btn btn-warning button" onClick={()=>this.call(user)}>Edit</button>
+                                                <button type="button" class="btn btn-danger button"  onClick={()=>this.onDelete(user)}>Delet</button>
                                             </td>
                                             <div className="box">
                                                 <Modal visible={this.state.visible}
@@ -134,7 +134,7 @@ export default class Showdata extends Component{
                                                             <input type="text" className="form-control" id="firstname" onChange={this.handleChang} value={this.state.firstname}/>
                                                         </div>
                                                         <div className="form-group">
-                                                            <label>lasttname:</label>
+                                                            <label>lastname:</label>
                                                             <input type="text" className="form-control" id="lastname" onChange={this.handleChang} value={this.state.lastname}/>
                                                         </div>
                                                         <button type="button" className="btn btn-primary" onClick={this.handleClicked}>Submit</button>
