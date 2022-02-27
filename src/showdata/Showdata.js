@@ -102,6 +102,7 @@ export default class Showdata extends Component{
                                 <th>ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Regis by</th>
                                 <th>Timestamp</th>
                                 <th colSpan="2">Action</th>
                             </tr>
@@ -113,6 +114,7 @@ export default class Showdata extends Component{
                                             <td>{user.id}</td>
                                             <td>{user.firstname}</td>
                                             <td>{user.lastname}</td>
+                                            <td>{user.facebookAddress}</td>
                                             <td>{user.regisTime}</td>
                                             <td>
                                                 <button type="button" class="btn btn-warning button" onClick={()=>this.call(user)}>Edit</button>

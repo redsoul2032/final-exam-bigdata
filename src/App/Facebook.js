@@ -42,6 +42,7 @@ export default class Facebook extends Component {
         picture: localStorage.getItem('picture')
       });
     }
+    window.localStorage.setItem("emailUser", localStorage.getItem('email'));
   }
 
   logoutFacebook = () => {
@@ -58,6 +59,8 @@ export default class Facebook extends Component {
     localStorage.setItem('name', '');
     localStorage.setItem('email', '');
     localStorage.setItem('picture', '');
+
+    window.localStorage.removeItem("emailUser");
   }
   
   
