@@ -50,8 +50,8 @@ app.put('/delete', function(req, res) {
 
 //edit
 app.put('/data', function(req, res) {
-    var sql = 'UPDATE users SET firstname= ? , lastname = ? WHERE id = ?';
-    db.query(sql,[req.body.firstname,req.body.lastname,req.body.idkey],function (error, results) {
+    var sql = 'UPDATE users SET firstname= ? , lastname = ? , facebookAddress = ? , regisTime = current_timestamp() WHERE id = ?';
+    db.query(sql,[req.body.firstname,req.body.lastname,req.body.email,req.body.idkey],function (error, results) {
         if(error) throw error;
         res.send(JSON.stringify(results));
     });

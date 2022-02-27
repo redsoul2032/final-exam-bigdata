@@ -77,13 +77,15 @@ export default class Showdata extends Component{
         let data = {
             idkey:this.state.idkey,
             firstname:this.state.firstname,
-            lastname:this.state.lastname
+            lastname:this.state.lastname,
+            email:window.localStorage.getItem("emailUser")
         }
         axios.put(url,data)
         this.setState({
             idkey:"",
             firstname:"",
-            lastname:""
+            lastname:"",
+            email:""
         });
 	this.closeModal();
         setTimeout(()=>{this.componentDidMount()},1)
@@ -115,7 +117,7 @@ export default class Showdata extends Component{
                                             <td>{user.firstname}</td>
                                             <td>{user.lastname}</td>
                                             <td>{user.facebookAddress}</td>
-                                            <td>{user.regisTime}</td>
+                                            <td>{user.regisTime.slice(0,10)}</td>
                                             <td>
                                                 <button type="button" class="btn btn-warning button" onClick={()=>this.call(user)}>Edit</button>
                                                 <button type="button" class="btn btn-danger button"  onClick={()=>this.onDelete(user)}>Delet</button>
