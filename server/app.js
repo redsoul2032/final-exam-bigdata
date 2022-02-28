@@ -21,7 +21,7 @@ app.use(body());
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 const db = mysql.createConnection({
-    host: '172.20.80.1',
+    host: '172.23.112.1',
     user: 'pleum',
     password: '1234',
     database: 'react_test_db'
