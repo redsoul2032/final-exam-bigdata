@@ -21,7 +21,7 @@ app.use(body());
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 const db = mysql.createConnection({
-    host: '172.23.112.1',
+    host: '172.27.96.1',
     user: 'pleum',
     password: '1234',
     database: 'react_test_db'
@@ -31,6 +31,18 @@ const db = mysql.createConnection({
 app.get('/data', function(req,res){
     console.log("Hello in /data ");
     let sql = 'SELECT * FROM users;';
+    db.query(sql, (err, result)=>{
+        if(err) throw err;
+        console.log(result);
+        res.json(result);
+    });
+    console.log("after query");
+});
+
+// show data province to register
+app.get('/province', function(req,res){
+    console.log("Hello in /data ");
+    let sql = 'SELECT * FROM province ORDER BY province_name ASC;';
     db.query(sql, (err, result)=>{
         if(err) throw err;
         console.log(result);
@@ -64,6 +76,7 @@ app.post('/data', function(req, res){
         id:req.body.idkey,
         firstname:req.body.firstname,
         lastname:req.body.lastname,
+        province:req.body.province,
         facebookAddress:req.body.email
     };
     let sql = 'INSERT INTO users SET ?';

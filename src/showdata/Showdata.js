@@ -98,12 +98,13 @@ export default class Showdata extends Component{
                 <h2 className="my-4">Users Information<br/></h2>
                 <hr/>
                 <div className="container p-3 my-3 bg-dark text-white">
-                    <table className="table table-dark">
+                    <table className="table table-dark w-80">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Province</th>
                                 <th>Regis by</th>
                                 <th>Timestamp</th>
                                 <th colSpan="2">Action</th>
@@ -116,6 +117,7 @@ export default class Showdata extends Component{
                                             <td>{user.id}</td>
                                             <td>{user.firstname}</td>
                                             <td>{user.lastname}</td>
+                                            <td>{user.province}</td>
                                             <td>{user.facebookAddress}</td>
                                             <td>{user.regisTime.slice(0,10)}</td>
                                             <td>
