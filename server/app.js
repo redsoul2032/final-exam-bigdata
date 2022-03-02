@@ -30,7 +30,7 @@ const db = mysql.createConnection({
 // show data
 app.get('/data', function(req,res){
     console.log("Hello in /data ");
-    let sql = 'SELECT * FROM users;';
+    let sql = 'SELECT A.*, B.`province_name` FROM `users` A,`province` B WHERE A.province_ID = B.province_ID ORDER BY `A`.`id` ASC;';
     db.query(sql, (err, result)=>{
         if(err) throw err;
         console.log(result);
@@ -42,7 +42,7 @@ app.get('/data', function(req,res){
 // show data province to register
 app.get('/province', function(req,res){
     console.log("Hello in /data ");
-    let sql = 'SELECT * FROM province ORDER BY province_name ASC;';
+    let sql = 'SELECT `province_ID` AS provinceID, `province_name` FROM province ORDER BY province_name ASC;';
     db.query(sql, (err, result)=>{
         if(err) throw err;
         console.log(result);
@@ -62,8 +62,8 @@ app.put('/delete', function(req, res) {
 
 //edit
 app.put('/data', function(req, res) {
-    var sql = 'UPDATE users SET firstname= ? , lastname = ? , facebookAddress = ? , regisTime = current_timestamp() WHERE id = ?';
-    db.query(sql,[req.body.firstname,req.body.lastname,req.body.email,req.body.idkey],function (error, results) {
+    var sql = 'UPDATE users SET firstname= ? , lastname = ? , province_ID = ? , facebookAddress = ? , regisTime = current_timestamp() WHERE id = ?';
+    db.query(sql,[req.body.firstname,req.body.lastname,req.body.provinceEdit,req.body.email,req.body.idkey],function (error, results) {
         if(error) throw error;
         res.send(JSON.stringify(results));
     });
@@ -76,7 +76,7 @@ app.post('/data', function(req, res){
         id:req.body.idkey,
         firstname:req.body.firstname,
         lastname:req.body.lastname,
-        province:req.body.province,
+        province_ID:req.body.province,
         facebookAddress:req.body.email
     };
     let sql = 'INSERT INTO users SET ?';

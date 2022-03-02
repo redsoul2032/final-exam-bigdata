@@ -39,19 +39,6 @@ class Register extends Component{
         })
     }
 
-    openModal() {
-        this.setState({
-            visible : true
-        });
-
-    }
-
-    closeModal() {
-        this.setState({
-            visible : false
-        });
-    }
-
     handleChang = (e) => {
         this.setState({
             [e.target.id]: e.target.value
@@ -59,14 +46,18 @@ class Register extends Component{
     }
 
     handleClicked() {
-        var provinceText = document.getElementById("selectProvince").value;
-        //alert('Province: ' + provinceText);
+        if (this.state.selectProvince === undefined) {
+            this.state.selectProvince = "00";
+            console.log("undefined set value to: " + this.state.selectProvince);
+        }
+
+        console.log('Province: ' + this.state.selectProvince);
         let url = `https://localhost:3000/data`;
         let data = {
             idkey:this.state.idkey,
             firstname:this.state.firstname,
             lastname:this.state.lastname,
-            province:provinceText,
+            province:this.state.selectProvince,
             email:window.localStorage.getItem("emailUser")
         }
         axios.post(url,data)
@@ -106,12 +97,12 @@ class Register extends Component{
 
                     <div className="form-group">
                         <label className="text-white">Province</label>
-                        <select className="form-control" id="selectProvince" onChange={this.handleChang}>
-                            <option valueA="NULL"> -</option>
+                        <select className="form-control" id="selectProvince" onChange={this.handleChang} required>
+                            <option value="00" selected> -- </option>
                             {list.map((province) =>{
                                 return(
-                                    <option value={province.province_name} >{province.province_name}</option>
-                                )})}
+                                    <option value={province.provinceID} >{province.province_name}</option>
+                                )})}    
                         </select>
                     </div>
                     

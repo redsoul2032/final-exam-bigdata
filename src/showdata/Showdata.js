@@ -9,26 +9,43 @@ export default class Showdata extends Component{
     constructor() {
         super();
         this.state ={
-            list:[],
+            listUser:[],
             idkey:"",
             firstname:"",
-            lastname:""
+            lastname:"",
+            province_ID:"",
+
+            listProvince:[],
+            provinceID:""
         }
         this.handleChang = this.handleChang.bind(this);
         this.handleClicked = this.handleClicked.bind(this);
         //console.log("hello show data");
     }
     componentDidMount() {
-        //console.log("before get data");
         this.getData();
-        //console.log("after get data");
     }
+    
     getData = () => {
-        console.log("before fetch data");
         fetch('/data')
             .then(res => res.json())
-            .then(list => this.setState({ list }))
+            .then(listUser => this.setState({ listUser }))
+
+        fetch('/province')
+            .then(res => res.json())
+            .then(listProvince => this.setState({ listProvince }))
         console.log("after fetch data");
+    }
+
+    call=(user)=>{    
+        this.openModal();
+        this.setState({
+            idkey:user.id,
+            firstname:user.firstname,
+            lastname:user.lastname,
+            province:user.province_ID,
+            provinceName:user.province_name
+        })
     }
 
     onDelete=(user)=>{
@@ -44,40 +61,35 @@ export default class Showdata extends Component{
         this.setState({
             visible : true
         });
-
     }
+
     closeModal() {
+        this.form.reset()
+
         this.setState({
             visible : false
         });
     }
-    call=(user)=>{
-        this.openModal();
-        this.setState({
-            idkey:user.id,
-            firstname:user.firstname,
-            lastname:user.lastname
-        })
-    }
+    
     handleChang = (e) => {
         this.setState({
             [e.target.id]: e.target.value
         });
-        let url = `https://localhost:3000/data`;
-        let data = {
-            idkey:this.state.idkey,
-            firstname:this.state.firstname,
-            lastname:this.state.lastname
-        }
-        axios.put(url,data)
+        console.log([e.target.id]+ ": "+ e.target.value);
     }
 
     handleClicked(){
+        if (this.state.EditProvince === undefined) {
+            this.state.EditProvince = this.state.province;
+            console.log("undefined set new value: " + this.state.EditProvince);
+        }
+
         let url = `https://localhost:3000/data`;
         let data = {
             idkey:this.state.idkey,
             firstname:this.state.firstname,
             lastname:this.state.lastname,
+            provinceEdit:this.state.EditProvince,
             email:window.localStorage.getItem("emailUser")
         }
         axios.put(url,data)
@@ -85,14 +97,21 @@ export default class Showdata extends Component{
             idkey:"",
             firstname:"",
             lastname:"",
+            provinceEdit:"",
             email:""
         });
-	this.closeModal();
+
+        this.form.reset()
+        this.state.EditProvince = undefined;
+
+	    this.closeModal();
         setTimeout(()=>{this.componentDidMount()},1)
     }
-    render() {
-        let {list} = this.state;
 
+    render() {
+        
+        let {listUser} = this.state;
+   
         return (
             <div className="App">
                 <h2 className="my-4">Users Information<br/></h2>
@@ -111,18 +130,19 @@ export default class Showdata extends Component{
                             </tr>
                         </thead>
                         <tbody>
-                                {list.map((user) =>{
+                                {listUser.map((user) =>{
+
                                     return(
                                         <tr>
                                             <td>{user.id}</td>
                                             <td>{user.firstname}</td>
                                             <td>{user.lastname}</td>
-                                            <td>{user.province}</td>
+                                            <td>{user.province_name}</td>
                                             <td>{user.facebookAddress}</td>
                                             <td>{user.regisTime.slice(0,10)}</td>
                                             <td>
                                                 <button type="button" class="btn btn-warning button" onClick={()=>this.call(user)}>Edit</button>
-                                                <button type="button" class="btn btn-danger button"  onClick={()=>this.onDelete(user)}>Delet</button>
+                                                <button type="button" class="btn btn-danger button"  onClick={()=>this.onDelete(user)}>Delete</button>
                                             </td>
                                             <div className="box">
                                                 <Modal visible={this.state.visible}
@@ -131,7 +151,7 @@ export default class Showdata extends Component{
                                                        effect="fadeInUp"
                                                        onClickAway={() => this.closeModal()}
                                                 >
-                                                    <form className="container" id='form'>
+                                                    <form className="container" id='form' ref={form => this.form = form}>
                                                         <div className="form-group">
                                                             <h3><label htmlFor="id">ID: {this.state.idkey}<br/></label></h3>
                                                         </div>
@@ -143,6 +163,19 @@ export default class Showdata extends Component{
                                                             <label>lastname:</label>
                                                             <input type="text" className="form-control" id="lastname" onChange={this.handleChang} value={this.state.lastname}/>
                                                         </div>
+
+                                                        <div className="form-group" id="formProvince">
+                                                            <label>Province</label>
+                                                                <select className="form-control" id="EditProvince" onChange={this.handleChang} required>
+                                                                    <option value={this.state.province} selected> {this.state.provinceName} </option>
+                                                                    <option value="00" > -- </option>
+                                                                    {this.state.listProvince.map(get => {
+                                                                        return(
+                                                                            <option value={get.provinceID}>{get.province_name}</option>
+                                                                        )})}
+                                                            </select>
+                                                        </div>
+                                                        
                                                         <button type="button" className="btn btn-primary" onClick={this.handleClicked}>Submit</button>
                                                     </form>
                                                 </Modal>
